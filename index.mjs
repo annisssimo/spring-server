@@ -1,6 +1,7 @@
 import express from 'express';
 import 'dotenv/config';
 import cors from 'cors';
+import { projects } from './data/projects.js';
 
 const app = express();
 const HOST = 'localhost';
@@ -23,6 +24,18 @@ app.post('/login', (req, res) => {
   } else {
     return res.status(401).json({ message: 'Invalid credentials' });
   }
+});
+
+app.get('/projects', (req, res) => {
+  const searchQuery = req.query.search.toLowerCase();
+
+  const filteredProjects = projects.filter(
+    (proj) =>
+      proj.title.toLowerCase().includes(searchQuery) ||
+      proj.description.toLowerCase().includes(searchQuery)
+  );
+
+  res.status(200).json(filteredProjects);
 });
 
 app.listen(PORT, () => {
