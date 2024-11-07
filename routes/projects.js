@@ -9,7 +9,7 @@ router.get('/projects', (req, res) => {
   const filteredProjects = projects.filter(
     (proj) =>
       proj.title.toLowerCase().includes(searchQuery) ||
-      proj.description.toLowerCase().includes(searchQuery)
+      proj.description.toLowerCase().includes(searchQuery),
   );
 
   res.status(200).json(filteredProjects);
