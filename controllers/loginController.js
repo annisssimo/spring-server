@@ -1,4 +1,5 @@
 import { HttpError } from '../utils/httpError.js';
+import { HttpStatusCode } from '../utils/httpStatusCode.js';
 
 export const login = (req, res, next) => {
   const { username, password } = req.body;
@@ -6,8 +7,10 @@ export const login = (req, res, next) => {
     username === process.env.ADMIN_USERNAME &&
     password === process.env.ADMIN_PASSWORD
   ) {
-    return res.status(200).json({ isAuthenticated: true });
+    return res.status(HttpStatusCode.OK).json({ isAuthenticated: true });
   } else {
-    return next(new HttpError('Invalid credintials', 401));
+    return next(
+      new HttpError('Invalid credentials', HttpStatusCode.UNAUTHORIZED),
+    );
   }
 };

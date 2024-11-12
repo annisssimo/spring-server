@@ -1,4 +1,5 @@
 import { projects } from '../models/projectModel.js';
+import { HttpStatusCode } from '../utils/httpStatusCode.js';
 
 export const getProjects = (req, res) => {
   const searchQuery = req.query.search ? req.query.search.toLowerCase() : '';
@@ -9,5 +10,5 @@ export const getProjects = (req, res) => {
       proj.description.toLowerCase().includes(searchQuery),
   );
 
-  res.status(200).json(filteredProjects);
+  res.status(HttpStatusCode.OK).json(filteredProjects);
 };
