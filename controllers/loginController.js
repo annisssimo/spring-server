@@ -1,4 +1,6 @@
-export const login = (req, res) => {
+import { HttpError } from '../utils/httpError.js';
+
+export const login = (req, res, next) => {
   const { username, password } = req.body;
   if (
     username === process.env.ADMIN_USERNAME &&
@@ -6,6 +8,6 @@ export const login = (req, res) => {
   ) {
     return res.status(200).json({ isAuthenticated: true });
   } else {
-    return res.status(401).json({ message: 'Invalid credentials' });
+    return next(new HttpError('Invalid credintials', 401));
   }
 };
