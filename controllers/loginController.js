@@ -7,7 +7,7 @@ export const login = (req, res, next) => {
     username === process.env.ADMIN_USERNAME &&
     password === process.env.ADMIN_PASSWORD
   ) {
-    return res.status(HttpStatusCode.OK).json({ isAuthenticated: true });
+    return res.status(HttpStatusCode.CREATED).json({ isAuthenticated: true });
   } else {
     return next(
       new HttpError('Invalid credentials', HttpStatusCode.UNAUTHORIZED),
