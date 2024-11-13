@@ -1,5 +1,5 @@
 import { HttpError } from '../utils/httpError.js';
-import { HttpStatusCode } from '../utils/httpStatusCode.js';
+import { HTTP_STATUS_CODES } from '../utils/httpStatusCode.js';
 import { ERROR_MESSAGES } from '../utils/errorMessages.js';
 
 export class LoginService {
@@ -12,7 +12,7 @@ export class LoginService {
     } else {
       throw new HttpError(
         ERROR_MESSAGES.INVALID_CREDENTIALS,
-        HttpStatusCode.UNAUTHORIZED,
+        HTTP_STATUS_CODES.UNAUTHORIZED,
       );
     }
   }

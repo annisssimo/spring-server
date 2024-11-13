@@ -1,4 +1,4 @@
-import { HttpStatusCode } from '../utils/httpStatusCode.js';
+import { HTTP_STATUS_CODES } from '../utils/httpStatusCode.js';
 import { ProjectService } from '../services/projectService.js';
 
 export const getProjects = (req, res) => {
@@ -6,5 +6,5 @@ export const getProjects = (req, res) => {
 
   const filteredProjects = ProjectService.getFilteredProjects(searchQuery);
 
-  res.status(HttpStatusCode.OK).json(filteredProjects);
+  res.status(HTTP_STATUS_CODES.OK).json(filteredProjects);
 };
