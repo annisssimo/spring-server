@@ -1,14 +1,10 @@
-import { projects } from '../models/projectModel.js';
 import { HttpStatusCode } from '../utils/httpStatusCode.js';
+import { ProjectService } from '../services/projectService.js';
 
 export const getProjects = (req, res) => {
-  const searchQuery = req.query.search ? req.query.search.toLowerCase() : '';
+  const searchQuery = req.query.search;
 
-  const filteredProjects = projects.filter(
-    (proj) =>
-      proj.title.toLowerCase().includes(searchQuery) ||
-      proj.description.toLowerCase().includes(searchQuery),
-  );
+  const filteredProjects = ProjectService.getFilteredProjects(searchQuery);
 
   res.status(HttpStatusCode.OK).json(filteredProjects);
 };
