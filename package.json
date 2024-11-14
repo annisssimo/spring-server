@@ -1,10 +1,10 @@
 {
   "name": "spring-server",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.mjs",
   "type": "module",
   "scripts": {
-    "dev": "node --watch --env-file .env index.mjs",
+    "dev": "node --watch --env-file .env ./src/app.mjs",
     "lint": "eslint .",
     "prettier": "prettier --write .",
     "prettier-check": "prettier --check .",

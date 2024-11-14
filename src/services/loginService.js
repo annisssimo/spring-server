@@ -1,6 +1,6 @@
 import { HttpError } from '../utils/httpError.js';
-import { HTTP_STATUS_CODES } from '../utils/httpStatusCode.js';
-import { ERROR_MESSAGES } from '../utils/errorMessages.js';
+import { HTTP_STATUS_CODES } from '../constants/httpStatusCode.js';
+import { ERROR_MESSAGES } from '../constants/errorMessages.js';
 
 export class LoginService {
   static authenticate(username, password) {

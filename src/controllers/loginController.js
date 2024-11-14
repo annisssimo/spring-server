@@ -1,5 +1,5 @@
 import { LoginService } from '../services/loginService.js';
-import { HTTP_STATUS_CODES } from '../utils/httpStatusCode.js';
+import { HTTP_STATUS_CODES } from '../constants/httpStatusCode.js';
 
 export const login = (req, res, next) => {
   const { username, password } = req.body;

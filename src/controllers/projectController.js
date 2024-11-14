@@ -1,4 +1,4 @@
-import { HTTP_STATUS_CODES } from '../utils/httpStatusCode.js';
+import { HTTP_STATUS_CODES } from '../constants/httpStatusCode.js';
 import { ProjectService } from '../services/projectService.js';
 
 export const getProjects = (req, res) => {

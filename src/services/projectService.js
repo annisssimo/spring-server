@@ -1,4 +1,4 @@
-import { projects } from '../models/projectModel.js';
+import { projects } from '../data/projects.js';
 
 export class ProjectService {
   static getFilteredProjects(searchQuery) {
