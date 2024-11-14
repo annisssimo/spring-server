@@ -5,8 +5,8 @@ export const login = (req, res, next) => {
   const { username, password } = req.body;
 
   try {
-    const auth = LoginService.authenticate(username, password);
-    res.status(HTTP_STATUS_CODES.CREATED).json(auth);
+    LoginService.authenticate(username, password);
+    res.status(HTTP_STATUS_CODES.CREATED).send();
   } catch (error) {
     next(error);
   }
