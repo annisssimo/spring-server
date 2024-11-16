@@ -3,6 +3,7 @@ import cors from 'cors';
 import loginRoutes from './routes/login.js';
 import projectsRoutes from './routes/projects.js';
 import { errorHandler } from './middleware/errorMiddleware.js';
+import { initializeDatabase } from './database/index.js';
 
 const app = express();
 const HOST = 'localhost';
@@ -18,6 +19,8 @@ app.get('/', (req, res) => {
 app.use(loginRoutes);
 app.use(projectsRoutes);
 app.use(errorHandler);
+
+initializeDatabase();
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://${HOST}:${PORT}/`);
