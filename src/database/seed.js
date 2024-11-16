@@ -6,9 +6,7 @@ import { sequelize } from './index.js';
   try {
     await sequelize.sync({ force: true });
 
-    for (let project of projects) {
-      await Project.create(project);
-    }
+    await Project.bulkCreate(projects);
 
     console.log('Data has been inserted successfully.');
   } catch (error) {

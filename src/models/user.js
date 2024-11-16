@@ -36,8 +36,8 @@ User.init(
     },
   },
   {
-    sequelize, // это важно, потому что нужно передать sequelize, чтобы он знал, в какую базу данных подключаться
-    modelName: 'User', // указываем имя модели
-    tableName: 'users', // указываем имя таблицы в базе данных (опционально)
+    sequelize,
+    modelName: 'User',
+    tableName: 'users',
   },
 );
