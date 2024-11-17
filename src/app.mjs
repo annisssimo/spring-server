@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import loginRoutes from './routes/login.js';
 import projectsRoutes from './routes/projects.js';
+import signupRoutes from './routes/signup.js';
 import { errorHandler } from './middleware/errorMiddleware.js';
 import { initializeDatabase } from './database/index.js';
 
@@ -18,6 +19,7 @@ app.get('/', (req, res) => {
 
 app.use(loginRoutes);
 app.use(projectsRoutes);
+app.use(signupRoutes);
 app.use(errorHandler);
 
 initializeDatabase();
