@@ -4,7 +4,7 @@ import { sequelize } from './index.js';
 
 (async function syncAndSeed() {
   try {
-    await sequelize.sync({ force: true });
+    await sequelize.sync({ force: false });
 
     await Project.bulkCreate(projects);
 
