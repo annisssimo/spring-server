@@ -19,8 +19,8 @@ Project.init(
     },
   },
   {
-    sequelize, // передаём экземпляр sequelize
-    modelName: 'Project', // имя модели
-    tableName: 'projects', // имя таблицы
+    sequelize,
+    modelName: 'Project',
+    tableName: 'projects',
   },
 );
