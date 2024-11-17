@@ -3,6 +3,6 @@ import { signup } from '../controllers/signupController.js';
 
 const router = express.Router();
 
-router.post('/signup', signup); //добавить мидлвару для валидации
+router.post('/signup', signup);
 
 export default router;

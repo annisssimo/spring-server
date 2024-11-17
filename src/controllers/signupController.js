@@ -1,25 +1,22 @@
-import { User } from '../models/user.js';
+import { SignupService } from '../services/signupService.js';
 import { HTTP_STATUS_CODES } from '../constants/httpStatusCode.js';
-import bcrypt from 'bcrypt';
 
-export const signup = async (req, res, next) => {
-  const { username, password, firstName, lastName, age } = req.body;
-
+export const signup = async (req, res) => {
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
+    await SignupService.validateSignupData(req.body);
 
-    const newUser = await User.create({
-      username,
-      password: hashedPassword,
-      firstName,
-      lastName,
-      age,
-    });
+    const newUser = await SignupService.createUser(req.body);
 
     res
       .status(HTTP_STATUS_CODES.CREATED)
-      .json({ message: 'User created', newUser });
-  } catch (err) {
-    next(err);
+      .json({ message: 'User created', user: newUser });
+  } catch (error) {
+    if (error.errors) {
+      res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({ errors: error.errors });
+    } else {
+      res
+        .status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR)
+        .json({ error: error.error });
+    }
   }
 };
