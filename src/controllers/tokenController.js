@@ -3,7 +3,7 @@ import { HTTP_STATUS_CODES } from '../constants/httpStatusCode.js';
 import { ERROR_MESSAGES } from '../constants/errorMessages.js';
 
 export const refreshAccessToken = (req, res) => {
-  const { refreshToken } = req.body;
+  const refreshToken = req.cookies.refreshToken;
 
   if (!refreshToken) {
     return res.status(HTTP_STATUS_CODES.UNAUTHORIZED).json({
@@ -23,6 +23,6 @@ export const refreshAccessToken = (req, res) => {
       { expiresIn: '15m' },
     );
 
-    res.status(HTTP_STATUS_CODES.OK).json({ accessToken: accessToken });
+    res.status(HTTP_STATUS_CODES.OK).json({ accessToken });
   });
 };

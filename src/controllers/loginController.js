@@ -21,9 +21,13 @@ export const login = async (req, res, next) => {
       { expiresIn: '7d' },
     );
 
-    return res
-      .status(HTTP_STATUS_CODES.CREATED)
-      .json({ accessToken, refreshToken });
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    return res.status(HTTP_STATUS_CODES.CREATED).json({ accessToken });
   } catch (error) {
     next(error);
   }
