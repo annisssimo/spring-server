@@ -12,13 +12,13 @@ export const login = async (req, res, next) => {
     const accessToken = jwt.sign(
       { id: user.id, username: user.username },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: '15s' },
+      { expiresIn: '15m' },
     );
 
     const refreshToken = jwt.sign(
       { id: user.id, username: user.username },
       process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: '30s' },
+      { expiresIn: '14d' },
     );
 
     res.cookie('refreshToken', refreshToken, {
