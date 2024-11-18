@@ -20,7 +20,7 @@ export const refreshAccessToken = (req, res) => {
     const accessToken = jwt.sign(
       { id: user.id, username: user.username },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: '15s' },
+      { expiresIn: '15m' },
     );
 
     res.status(HTTP_STATUS_CODES.OK).json({ accessToken: accessToken });
