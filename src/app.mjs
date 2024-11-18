@@ -1,5 +1,7 @@
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
+
 import { initializeDatabase } from './database/index.js';
 import loginRoutes from './routes/login.js';
 import projectsRoutes from './routes/projects.js';
@@ -8,6 +10,7 @@ import tokenRoutes from './routes/token.js';
 import { errorHandler } from './middleware/errorMiddleware.js';
 
 const app = express();
+
 const HOST = process.env.HOST;
 const PORT = process.env.PORT || 3441;
 
@@ -19,6 +22,7 @@ app.use(
     credentials: true,
   }),
 );
+app.use(cookieParser());
 app.use(express.json());
 app.use(loginRoutes);
 app.use(projectsRoutes);
