@@ -11,18 +11,22 @@ export const refreshAccessToken = (req, res) => {
     });
   }
 
-  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-    if (err)
-      return res.status(HTTP_STATUS_CODES.FORBIDDEN).json({
-        error: ERROR_MESSAGES.INVALID_REFRESH_TOKEN,
-      });
+  return jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET,
+    (err, user) => {
+      if (err)
+        return res.status(HTTP_STATUS_CODES.FORBIDDEN).json({
+          error: ERROR_MESSAGES.INVALID_REFRESH_TOKEN,
+        });
 
-    const accessToken = jwt.sign(
-      { id: user.id, username: user.username },
-      process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: '15m' },
-    );
+      const accessToken = jwt.sign(
+        { id: user.id, username: user.username },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: '15s' },
+      );
 
-    res.status(HTTP_STATUS_CODES.OK).json({ accessToken });
-  });
+      return res.status(HTTP_STATUS_CODES.OK).json({ accessToken });
+    },
+  );
 };

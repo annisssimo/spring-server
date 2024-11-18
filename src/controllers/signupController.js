@@ -14,7 +14,9 @@ export const signup = async (req, res) => {
     if (error.errors) {
       res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({ errors: error.errors });
     } else {
-      res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).json({ error: error.error });
+      res
+        .status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR)
+        .json({ error: error.error });
     }
   }
 };
