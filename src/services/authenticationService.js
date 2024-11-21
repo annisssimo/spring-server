@@ -3,7 +3,7 @@ import { HTTP_STATUS_CODES } from '../constants/httpStatusCode.js';
 import { ERROR_MESSAGES } from '../constants/errorMessages.js';
 import { User } from '../models/user.js';
 import bcrypt from 'bcrypt';
-import { generateTokens, setRefreshTokenCookie } from '../utils/tokenUtils.js';
+import { generateTokens } from '../utils/tokenUtils.js';
 
 export class AuthenticationService {
   static async authenticate(username, password) {
@@ -57,20 +57,18 @@ export class AuthenticationService {
       return newUser;
     } catch (error) {
       if (error.name === 'SequelizeUniqueConstraintError') {
-        throw { errors: { username: 'Username already exists' } };
+        throw { errors: { username: ERROR_MESSAGES.USERNAME_EXISTS } };
       }
-      throw { error: 'Internal server error' };
+      throw { error: ERROR_MESSAGES.INTERNAL_SERVER_ERROR };
     }
   }
 
-  static async signup(signupData, res) {
+  static async signup(signupData) {
     await this.validateSignupData(signupData);
 
     const newUser = await this.createUser(signupData);
 
     const { accessToken, refreshToken } = generateTokens(newUser);
-
-    setRefreshTokenCookie(res, refreshToken);
 
     return {
       statusCode: HTTP_STATUS_CODES.CREATED,
@@ -85,6 +83,7 @@ export class AuthenticationService {
         },
         accessToken,
       },
+      refreshToken,
     };
   }
 }
