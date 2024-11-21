@@ -1,7 +1,23 @@
+import { HttpError } from '../utils/httpError.js';
+import { HTTP_STATUS_CODES } from '../constants/httpStatusCode.js';
+import { ERROR_MESSAGES } from '../constants/errorMessages.js';
 import { User } from '../models/user.js';
 import bcrypt from 'bcrypt';
+import { generateTokens, setRefreshTokenCookie } from '../utils/tokenUtils.js';
 
-export class SignupService {
+export class AuthenticationService {
+  static async authenticate(username, password) {
+    const user = await User.findOne({ where: { username } });
+
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      throw new HttpError(
+        ERROR_MESSAGES.INVALID_CREDENTIALS,
+        HTTP_STATUS_CODES.UNAUTHORIZED,
+      );
+    }
+    return generateTokens(user);
+  }
+
   static async validateSignupData(data) {
     const { username, password, firstName, lastName, age } = data;
     const errors = {};
@@ -45,5 +61,30 @@ export class SignupService {
       }
       throw { error: 'Internal server error' };
     }
+  }
+
+  static async signup(signupData, res) {
+    await this.validateSignupData(signupData);
+
+    const newUser = await this.createUser(signupData);
+
+    const { accessToken, refreshToken } = generateTokens(newUser);
+
+    setRefreshTokenCookie(res, refreshToken);
+
+    return {
+      statusCode: HTTP_STATUS_CODES.CREATED,
+      data: {
+        message: 'User created',
+        user: {
+          id: newUser.id,
+          username: newUser.username,
+          firstName: newUser.firstName,
+          lastName: newUser.lastName,
+          age: newUser.age,
+        },
+        accessToken,
+      },
+    };
   }
 }
