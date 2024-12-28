@@ -59,31 +59,42 @@ export class AuthenticationService {
       if (error.name === 'SequelizeUniqueConstraintError') {
         throw { errors: { username: ERROR_MESSAGES.USERNAME_EXISTS } };
       }
-      throw { error: ERROR_MESSAGES.INTERNAL_SERVER_ERROR };
+      throw new HttpError(
+        ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+        HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   static async signup(signupData) {
-    await this.validateSignupData(signupData);
+    try {
+      await AuthenticationService.validateSignupData(signupData);
+      const newUser = await this.createUser(signupData);
 
-    const newUser = await this.createUser(signupData);
+      const { accessToken, refreshToken } = generateTokens(newUser);
 
-    const { accessToken, refreshToken } = generateTokens(newUser);
-
-    return {
-      statusCode: HTTP_STATUS_CODES.CREATED,
-      data: {
-        message: 'User created',
-        user: {
-          id: newUser.id,
-          username: newUser.username,
-          firstName: newUser.firstName,
-          lastName: newUser.lastName,
-          age: newUser.age,
+      return {
+        statusCode: HTTP_STATUS_CODES.CREATED,
+        data: {
+          message: 'User created',
+          user: {
+            id: newUser.id,
+            username: newUser.username,
+            firstName: newUser.firstName,
+            lastName: newUser.lastName,
+            age: newUser.age,
+          },
+          accessToken,
         },
-        accessToken,
-      },
-      refreshToken,
-    };
+        refreshToken,
+      };
+    } catch (err) {
+      return {
+        statusCode: HTTP_STATUS_CODES.BAD_REQUEST,
+        data: {
+          err: err.errors,
+        },
+      };
+    }
   }
 }

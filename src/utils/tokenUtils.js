@@ -24,7 +24,7 @@ export const setRefreshTokenCookie = (res, refreshToken) => {
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
     sameSite: 'strict',
-    maxAge: 14 * 24 * 60 * 60 * 1000, // 14 дн
+    maxAge: 14 * 24 * 60 * 60 * 1000, // 14 days
   });
 };
 

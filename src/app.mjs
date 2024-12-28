@@ -23,7 +23,7 @@ app.use(
 );
 app.use(cookieParser());
 app.use(express.json());
-app.use(authRouter);
+app.use('/auth', authRouter);
 app.use(projectsRoutes);
 app.use(errorHandler);
 
