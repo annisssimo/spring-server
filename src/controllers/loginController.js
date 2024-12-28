@@ -1,12 +1,16 @@
-import { LoginService } from '../services/loginService.js';
+import { AuthenticationService } from '../services/authenticationService.js';
 import { HTTP_STATUS_CODES } from '../constants/httpStatusCode.js';
+import TokenController from '../utils/tokenUtils.js';
 
-export const login = (req, res, next) => {
-  const { username, password } = req.body;
-
+export const login = async (req, res, next) => {
   try {
-    LoginService.authenticate(username, password);
-    res.status(HTTP_STATUS_CODES.CREATED).send();
+    const { username, password } = req.body;
+    const { accessToken, refreshToken } =
+      await AuthenticationService.authenticate(username, password);
+
+    TokenController.setRefreshTokenCookie(res, refreshToken);
+
+    return res.status(HTTP_STATUS_CODES.CREATED).json({ accessToken });
   } catch (error) {
     next(error);
   }

@@ -1,10 +1,15 @@
 import { HTTP_STATUS_CODES } from '../constants/httpStatusCode.js';
 import { ProjectService } from '../services/projectService.js';
 
-export const getProjects = (req, res) => {
-  const searchQuery = req.query.search;
+export const getProjects = async (req, res, next) => {
+  try {
+    const searchQuery = req.query.search;
 
-  const filteredProjects = ProjectService.getFilteredProjects(searchQuery);
+    const filteredProjects =
+      await ProjectService.getFilteredProjects(searchQuery);
 
-  res.status(HTTP_STATUS_CODES.OK).json(filteredProjects);
+    res.status(HTTP_STATUS_CODES.OK).json(filteredProjects);
+  } catch (error) {
+    next(error);
+  }
 };

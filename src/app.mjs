@@ -1,21 +1,29 @@
 import express from 'express';
 import cors from 'cors';
-import loginRoutes from './routes/login.js';
+import cookieParser from 'cookie-parser';
+
+import { initializeDatabase } from './database/index.js';
+import authRouter from './routes/authRouter.js';
 import projectsRoutes from './routes/projects.js';
 import { errorHandler } from './middleware/errorMiddleware.js';
 
 const app = express();
-const HOST = 'localhost';
+
+const HOST = process.env.HOST;
 const PORT = process.env.PORT || 3441;
+const CLIENT_PORT = process.env.CLIENT_PORT;
 
-app.use(cors());
+initializeDatabase();
+
+app.use(
+  cors({
+    origin: `http://${HOST}:${CLIENT_PORT}`,
+    credentials: true,
+  }),
+);
+app.use(cookieParser());
 app.use(express.json());
-
-app.get('/', (req, res) => {
-  res.send(`Server is running on http://${HOST}:${PORT}/`);
-});
-
-app.use(loginRoutes);
+app.use('/auth', authRouter);
 app.use(projectsRoutes);
 app.use(errorHandler);
 

@@ -1,12 +1,21 @@
-import { projects } from '../data/projects.js';
+import { Op } from 'sequelize';
+import { Project } from '../models/project.js';
 
 export class ProjectService {
-  static getFilteredProjects(searchQuery) {
+  static async getFilteredProjects(searchQuery) {
     const query = searchQuery ? searchQuery.toLowerCase() : '';
-    return projects.filter(
-      (proj) =>
-        proj.title.toLowerCase().includes(query) ||
-        proj.description.toLowerCase().includes(query),
-    );
+
+    const projects = await Project.findAll({
+      where: query
+        ? {
+            [Op.or]: [
+              { title: { [Op.iLike]: `%${query}%` } },
+              { description: { [Op.iLike]: `%{query}%` } },
+            ],
+          }
+        : {},
+    });
+
+    return projects;
   }
 }
