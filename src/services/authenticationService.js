@@ -3,7 +3,7 @@ import { HTTP_STATUS_CODES } from '../constants/httpStatusCode.js';
 import { ERROR_MESSAGES } from '../constants/errorMessages.js';
 import { User } from '../models/user.js';
 import bcrypt from 'bcrypt';
-import { generateTokens } from '../utils/tokenUtils.js';
+import TokenController from '../utils/tokenUtils.js';
 
 export class AuthenticationService {
   static async authenticate(username, password) {
@@ -15,7 +15,7 @@ export class AuthenticationService {
         HTTP_STATUS_CODES.UNAUTHORIZED,
       );
     }
-    return generateTokens(user);
+    return TokenController.generateTokens(user);
   }
 
   static async hashPassword(password) {
@@ -50,7 +50,8 @@ export class AuthenticationService {
     try {
       const newUser = await this.createUser(signupData);
 
-      const { accessToken, refreshToken } = generateTokens(newUser);
+      const { accessToken, refreshToken } =
+        TokenController.generateTokens(newUser);
 
       return {
         statusCode: HTTP_STATUS_CODES.CREATED,

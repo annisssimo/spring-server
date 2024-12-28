@@ -1,11 +1,7 @@
 import { HTTP_STATUS_CODES } from '../constants/httpStatusCode.js';
 import { ERROR_MESSAGES } from '../constants/errorMessages.js';
 import { HttpError } from '../utils/httpError.js';
-import {
-  validateRefreshToken,
-  verifyToken,
-  generateAccessToken,
-} from '../utils/tokenUtils.js';
+import TokenController from '../utils/tokenUtils.js';
 
 export const refreshAccessToken = async (req, res, next) => {
   try {
@@ -18,14 +14,14 @@ export const refreshAccessToken = async (req, res, next) => {
       );
     }
 
-    validateRefreshToken(refreshToken);
+    TokenController.validateRefreshToken(refreshToken);
 
-    const user = await verifyToken(
+    const user = await TokenController.verifyToken(
       refreshToken,
       process.env.REFRESH_TOKEN_SECRET,
     );
 
-    const accessToken = generateAccessToken(user);
+    const accessToken = TokenController.generateAccessToken(user);
 
     res.status(HTTP_STATUS_CODES.OK).json({ accessToken });
   } catch (error) {
