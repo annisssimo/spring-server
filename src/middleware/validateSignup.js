@@ -1,4 +1,5 @@
 import { body, validationResult } from 'express-validator';
+import { HTTP_STATUS_CODES } from '../constants/httpStatusCode.js';
 
 export const validateSignup = [
   body('username')
@@ -24,10 +25,11 @@ export const validateSignup = [
 
 export const handleValidationErrors = (req, res, next) => {
   const errors = validationResult(req);
+
   if (!errors.isEmpty()) {
-    return res.status(400).json({
+    return res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({
       errors: errors.array().reduce((acc, err) => {
-        acc[err.param] = err.msg;
+        acc[err.path] = err.msg;
         return acc;
       }, {}),
     });
